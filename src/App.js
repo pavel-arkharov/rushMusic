@@ -1,5 +1,4 @@
 import './App.css';
-import axios from 'axios';
 import {useEffect, useState} from 'react';
 
 function App() {
@@ -8,6 +7,7 @@ function App() {
 	const REDIRECT_URI = 'http://localhost:3000';
 	const AUTH_ENDPOINT = 'http://accounts.spotify.com/authorize';
 	const RESPONSE_TYPE = 'token';
+	const SCOPE = 'user-library-read';
 
 	var SpotifyWebApi = require('spotify-web-api-node');
 
@@ -17,10 +17,6 @@ function App() {
 		redirectUri: REDIRECT_URI
 	});
 
-	var querystring = require('querystring');
-
-	const [searchKey, setSearchKey] = useState("");
-	const [artists, setArtists] = useState([]);
 	const [token, setToken] = useState("");
 
 	const [albums, setAlbums] = useState([]);
@@ -35,7 +31,7 @@ function App() {
 			window.location.hash = "";
 			window.localStorage.setItem("token", token);
 		}
-	
+		
 		setToken(token);
 	}, []);
 
@@ -44,52 +40,7 @@ function App() {
 		window.localStorage.removeItem('token');
 	}
 	
-	// const getToken = async () => {
-	// 	const {data} = await axios.post("https://accounts.spotify.com/authorize?" +
-	// 	querystring.stringify({
-	// 		response_type: 'code',
-	// 		client_id: CLIENT_ID,
-	// 		scope: 'user-library-read',
-	// 		redirect_uri: REDIRECT_URI,
-	// 		state: '1asjdaskda',
-	// 	}), {
-	// 		headers: {
-	// 			Authorization: `Bearer ${token}`,
-	// 			'Content-Type': 'application/x-www-form-urlencoded'
-	// 		}
-	// 	});
-
-	// 	console.log(data.code);
-	// };
-
-
-	const searchArtists = async (e) => {
-		e.preventDefault();
-		const {data} = await axios.get("https://api.spotify.com/v1/search", {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				'Access-Control-Allow-Origin': null
-			},
-			params: {
-				q: searchKey,
-				type: 'artist'
-			}
-		})
-
-		setArtists(data.artists.items);
-	}
-
-	SpotifyApi.setAccessToken('BQB1PxLJRMz6KaICrmdte3udUTYdooyzHCT0gssk_cdYZZLgWG8L5YwpnKx6r1d9OE3y9TBDxVXQHYYVMnuKba4FoGVbG5gXThSwpRo_kmLtGfx_7yGcUogR9TURXtVihtmH4Du5Fc8y2b1jZU40hqQTrgwiScVgWcE-wjge8ZFRnk7NE0sud0g');
-
-
-	const renderArtists = () => {
-		return artists.map(artist => (
-			<div key={artist.id}>
-				{artist.images.length ? <img width={'100%'} src={artist.images[0].url} alt=""/> : <div>No image</div>}
-				{artist.name}
-			</div>
-		))
-	}
+	SpotifyApi.setAccessToken(token);
 	function getElvis (e) {
 		e.preventDefault();
 		SpotifyApi.getMySavedAlbums({
@@ -132,7 +83,7 @@ function App() {
       <header className="App-header">
 	  <h1>Ghettoblaster music box 0.7</h1>
 	  {!token ?
-	  	<a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login to Spotify</a>
+	  	<a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}>Login to Spotify</a>
 		  : <div><form onSubmit={getElvis}>
 				<button type={'submit'}>Search</button>
 				{renderAlbums()}
