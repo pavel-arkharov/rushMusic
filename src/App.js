@@ -3,8 +3,9 @@ import {useEffect, useState} from 'react';
 
 function App() {
 
-	const CLIENT_ID = 'd3bec1c2ac244fb59650d7067352468a';
-	const REDIRECT_URI = 'http://localhost:3000';
+	const CLIENT_ID = process.env.CLIENT_ID;
+	const CLIENT_SECRET = process.env.CLIENT_SECRET;
+	const REDIRECT_URI = window.location.href;
 	const AUTH_ENDPOINT = 'http://accounts.spotify.com/authorize';
 	const RESPONSE_TYPE = 'token';
 	const SCOPE = 'user-library-read';
@@ -13,7 +14,7 @@ function App() {
 
 	var SpotifyApi = new SpotifyWebApi({
 		clientId: CLIENT_ID,
-		clientSecret: 'b15f58d1819a40f896051636521f08a9',
+		clientSecret: CLIENT_SECRET,
 		redirectUri: REDIRECT_URI
 	});
 
