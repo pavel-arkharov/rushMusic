@@ -3,8 +3,8 @@ import {useEffect, useState} from 'react';
 
 function App() {
 
-	const CLIENT_ID = process.env.CLIENT_ID;
-	const CLIENT_SECRET = process.env.CLIENT_SECRET;
+	const CLIENT_ID = process.env.MY_CLIENT_ID;
+	const CLIENT_SECRET = process.env.MY_CLIENT_SECRET;
 	const REDIRECT_URI = window.location.href;
 	const AUTH_ENDPOINT = 'http://accounts.spotify.com/authorize';
 	const RESPONSE_TYPE = 'token';
