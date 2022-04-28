@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 function App() {
 
 	const CLIENT_ID = 'd3bec1c2ac244fb59650d7067352468a';
-	const REDIRECT_URI = 'http://localhost:3000';
+	const REDIRECT_URI = window.location.href;
 	const AUTH_ENDPOINT = 'http://accounts.spotify.com/authorize';
 	const RESPONSE_TYPE = 'token';
 	const SCOPE = 'user-library-read';
